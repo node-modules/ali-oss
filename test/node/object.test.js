@@ -1945,6 +1945,24 @@ describe('test/object.test.js', () => {
         assert.equal(err.name, 'RestoreAlreadyInProgressError');
       }
     });
+    it('Should return 202 when restore codeArchive object ', async () => {
+      const name = 'test.codeArchive.js';
+      await store.put(name, __filename, { storageClass: 'ColdArchive' });
+
+      const info = await store.restore(name, {
+        days: 1,
+      });
+      assert.strictEqual(info.res.status, 202);
+      try {
+        await store.restore(name, {
+          restoreConfig: {
+            days: 1,
+          }
+        });
+      } catch (err) {
+        assert.strictEqual(err.name, 'RestoreAlreadyInProgress');
+      }
+    });
   });
 
   describe('symlink()', () => {

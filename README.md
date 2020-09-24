@@ -2267,6 +2267,9 @@ parameters:
 
 - name {String} object name
 - [options] {Object} optional parameters
+  - [restoreConfig] {Object} the operation be used to restore `ColdArchive` object.
+    - days  {String | number} remain in the restored state, which ranges from one to seven days.
+    - [tier] {String} restoration priority of the object. defalut `Standard`, also set `Bulk` 、`Expedited`
   - [timeout] {Number} the operation timeout
   - [versionId] {String} the version id of history object 
 
@@ -2287,11 +2290,23 @@ const result = await store.restore('ossdemo.txt');
 console.log(result.status);
 ```
 
-- Restore an history object
+- Restore a history object
 
 ```js
 const versionId = 'object versionId';
 const result = await store.restore('ossdemo.txt', { versionId });
+console.log(result.status);
+```
+
+- Restore a cold archived object
+
+```js
+const result = await store.restore('ossdemo.txt', { 
+  restoreConfig: {
+    days: 1,
+    tier: 'Expedited'
+  }
+ });
 console.log(result.status);
 ```
 
