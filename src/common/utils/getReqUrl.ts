@@ -4,10 +4,12 @@ import urlutil from 'url';
 import merge from 'merge-descriptors';
 import { isIP } from './isIP';
 import { escapeName } from './escapeName';
+import { checkConfigValid } from './checkConfigValid';
 
 
-export function getReqUrl(params, options) {
+export function getReqUrl(this: any, params, options) {
   const ep: any = {};
+  checkConfigValid(options.endpoint, 'endpoint');
   copy(options.endpoint, false).to(ep);
   const _isIP = isIP(ep.hostname);
   const isCname = options.cname;
@@ -33,7 +35,7 @@ export function getReqUrl(params, options) {
 
   if (params.subres) {
     let subresAsQuery = {};
-    if (is.string(params.subres)) {
+    if ((is as any).string(params.subres)) {
       subresAsQuery[params.subres] = '';
     } else if (is.array(params.subres)) {
       params.subres.forEach((k) => {

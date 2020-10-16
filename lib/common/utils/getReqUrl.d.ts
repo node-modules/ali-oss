@@ -1,1 +1,1 @@
-export declare function getReqUrl(params: any, options: any): string;
+export declare function getReqUrl(this: any, params: any, options: any): string;
